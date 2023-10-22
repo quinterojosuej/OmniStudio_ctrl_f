@@ -1,0 +1,95 @@
+<template>
+    <div class="slds-m-around_medium">
+        <lightning-card if:false={openModal} title="Omni Visualizer">
+            <lightning-card>
+                
+                <lightning-input class="slds-m-around_medium" type="text" 
+                label="Search an Omni!" 
+                onchange={handleTextInputOnChange}></lightning-input>
+                <p class="slds-m-left_medium">Looking at: <span>{textInput}</span></p>
+
+            <div if:true={loading1}>
+                <lightning-spinner alternative-text="Loading..." variant="brand">
+                </lightning-spinner>
+            </div>
+            <!-- </lightning-card>
+
+            <lightning-card> -->
+                <lightning-card if:true={omniOptionsBoolean}>
+                    <h2 class="slds-m-left_medium">Matched Omni-Components:</h2>
+
+                    <template for:each={omniOptions} for:item="omniOption">
+                        <p class="slds-m-left_medium" key={omniOption.Id}>{omniOption.Name}</p>
+                        <lightning-button class="slds-m-left_medium" key={omniOption.Id} data-id={omniOption.Id} data-name={omniOption.Name} 
+                        label={omniOption.Name} onclick={handleChosenOmniOption}></lightning-button>
+                    </template>
+
+                    <lightning-card if:true={omniRecord}>
+                        <h2 class="slds-m-left_medium">Looking at Omni Record: <span>{omniRecord.Name}</span></h2>
+
+                        <lightning-button class="slds-m-around_medium" label="Redo Data!" onclick={handleOmniObjectDataRedo}></lightning-button>
+                        
+                        <lightning-card if:true={formattedDataReferenceBoolean}>
+                            <h3>Data where this Omni Object is being referenced</h3>
+                            <lightning-datatable key-field="Id" data={formattedReferences} columns={formattedDataColumns}>
+                            </lightning-datatable>
+                        </lightning-card>
+                        <lightning-card if:true={formattedDataReferencingBoolean}>
+                            <h3>Data this Omni Object is referencing</h3>
+                            <lightning-datatable key-field="Id" data={formattedReferencing} columns={formattedDataColumns}>
+                            </lightning-datatable>
+                        </lightning-card>
+
+
+                    </lightning-card>
+
+                </lightning-card>
+
+                
+                <!-- <lightning-datatable if:true={omniRecord.data}></lightning-datatable> -->
+                <!-- <lightning-card if:false={omniRecord}><p>no records</p></lightning-card> -->
+                <!-- <p>Looking at: <span>{textInput}</span></p> -->
+
+                <lightning-card if:true={haveMatchesToCreate}>
+                    <p class="slds-m-left_medium">Found matches to make!</p>
+                    <lightning-button class="slds-m-around_medium" label="Make Match!" 
+                    onclick={handleMatchMakeModal}></lightning-button>
+                </lightning-card>
+
+            </lightning-card>
+        </lightning-card>
+
+        <lightning-card if:true={openModal}>
+
+            <lightning-modal-header label="Matches"></lightning-modal-header>
+
+            <lightning-modal-body>
+
+                <!-- <p>OmniDataTransform Found: <span>{matchedOmniNames.OmniDataTransform.length}</span> </p>
+                <template for:each={matchedOmniNames.OmniDataTransform} for:item="omniDataTransform">
+                    <p key={omniDataTransform.Id}>{omniDataTransform.Name}</p>
+                    <lightning-button key={omniDataTransform.Id} data-id={omniDataTransform.Id} data-omnitype="OmniProcess" data-name={omniDataTransform.Name} label={omniDataTransform.Name} onclick={modalMatchData}></lightning-button>
+                </template> -->
+
+                <!-- <p>OmniDataTransformItem Found: <span>{matchedOmniNames.OmniDataTransformItem.length}</span></p> -->
+
+                <p>OmniProcess Found: <span>{matchedOmniNames.OmniProcess.length}</span></p>
+                <template for:each={matchedOmniNames.OmniProcess} for:item="omniProcess">
+                    <p key={omniProcess.Id}>{omniProcess.Name} Version: {omniProcess.VersionNumber}</p>
+                    <lightning-button key={omniProcess.Id} data-id={omniProcess.Id} data-omnitype="OmniProcess" data-name={omniProcess.Name} data-omniprocesskey={omniProcess.OmniProcessKey} label={omniProcess.Name} onclick={modalMatchData}></lightning-button>
+                </template>
+
+                <!-- <p>OmniProcessElement Found: <span>{matchedOmniNames.OmniProcessElement.length}</span> </p> -->
+
+                <!-- <p>OmniUiCard Found: <span>{matchedOmniNames.OmniUiCard.length}</span></p> -->
+            </lightning-modal-body>
+
+            <lightning-modal-footer>
+                <lightning-button label="Exit" onclick={handleModalExit}></lightning-button>
+
+            </lightning-modal-footer>
+
+
+        </lightning-card>
+    </div>
+</template>
